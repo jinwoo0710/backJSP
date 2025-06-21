@@ -1,0 +1,71 @@
+use market;
+
+CREATE TABLE user (
+  usernumber INT AUTO_INCREMENT PRIMARY KEY,
+  userid VARCHAR(50) NOT NULL UNIQUE,
+  password VARCHAR(100) NOT NULL,
+  username VARCHAR(50) NOT NULL UNIQUE,
+  phone VARCHAR(20),
+  createdate TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE buypost (
+  postid INT AUTO_INCREMENT PRIMARY KEY,
+  usernumber INT NOT NULL,
+  username VARCHAR(50) NOT NULL,
+  category VARCHAR(100),
+  title VARCHAR(200) NOT NULL,
+  content TEXT NOT NULL,
+  image VARCHAR(255),
+  price DECIMAL(10, 2),
+  phone VARCHAR(100),
+  calltime VARCHAR(100),
+  deal SET('직거래', '택배'),
+  concat SET('채팅', '문자', '전화'),
+  sold ENUM('구하는중', '구함완료') DEFAULT '구하는중',
+  urgency ENUM('일반', '급구') DEFAULT '일반',
+  location VARCHAR(100),
+  viewcnt INT DEFAULT 0,
+  createdtime TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updatedtime TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  
+  FOREIGN KEY (usernumber) REFERENCES user(usernumber),
+  FOREIGN KEY (username) REFERENCES user(username)
+);
+
+CREATE TABLE sellpost (
+  postid INT AUTO_INCREMENT PRIMARY KEY,
+  usernumber INT NOT NULL,
+  username VARCHAR(50) NOT NULL,
+  category VARCHAR(100),
+  title VARCHAR(200) NOT NULL,
+  content TEXT NOT NULL,
+  image VARCHAR(255),
+  price DECIMAL(10, 2),
+  sold ENUM('판매중', '판매완료', '예약중') DEFAULT '판매중',
+  location VARCHAR(100),
+  viewcnt INT DEFAULT 0,
+  createdtime TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updatedtime TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  
+  FOREIGN KEY (usernumber) REFERENCES user(usernumber),
+  FOREIGN KEY (username) REFERENCES user(username)
+);
+
+CREATE TABLE commupost (
+  postid INT AUTO_INCREMENT PRIMARY KEY,
+  usernumber INT NOT NULL,
+  username VARCHAR(100) NOT NULL,
+  category VARCHAR(100),
+  visible VARCHAR(50),
+  title VARCHAR(255) NOT NULL,
+  content TEXT NOT NULL,
+  img VARCHAR(255),
+  tag VARCHAR(255),
+  viewcnt INT DEFAULT 0,
+  createtime TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updatetime TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  
+  FOREIGN KEY (usernumber) REFERENCES user(usernumber),
+  FOREIGN KEY (username) REFERENCES user(username)
+);
